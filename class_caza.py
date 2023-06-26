@@ -1,7 +1,10 @@
+
 import pygame
 import random
 import sonidos
 import colores
+import animacion_explosion
+from animacion_explosion import Explosion
 from class_naves_enemigas import NaveEnemiga
 
 
@@ -11,7 +14,7 @@ class CazaEnemigo(NaveEnemiga):
         super().__init__(x, y, 50, 50, imagen_caza)
         self.salud = 5
     
-    def update(lista_de_cazas, velocidad):
+    def update(lista_de_cazas, velocidad, lista_explo):
         eliminar_caza = []
         for caza in lista_de_cazas:
             if caza.salud > 0:
@@ -21,8 +24,12 @@ class CazaEnemigo(NaveEnemiga):
                     caza.rect.x = -100
                     caza.distancia_de_ataque.x = -100
             else:
+                explo = Explosion((caza.rect.x+25, caza.rect.y+25))
+                lista_explo.append(explo)
+                
                 sonidos.explota.play()
-                eliminar_caza.append(caza) 
+                eliminar_caza.append(caza)
+            
                 
         for caza in eliminar_caza:
             if caza in lista_de_cazas:
@@ -33,7 +40,7 @@ class CazaEnemigo(NaveEnemiga):
             pantalla.blit(caza.imagen, caza.rect)
             if modo_debug:
                 pygame.draw.rect(pantalla,(colores.YELLOW1),caza.distancia_de_ataque,2)
-                pygame.draw.rect(pantalla,(colores.RED1),caza.rect,2)
+                pygame.draw.rect(pantalla,(colores.RED2),caza.rect,2)
 
     def crear_lista_de_cazas(cantidad):
         lista_de_cazas = []
@@ -43,6 +50,6 @@ class CazaEnemigo(NaveEnemiga):
             lista_de_cazas.append(CazaEnemigo(x_random, y_random))
         return lista_de_cazas
 
-    def dibujar_cazas(lista_de_cazas,velocidad_cazas,modo_debug,pantalla):
-        CazaEnemigo.update(lista_de_cazas,velocidad_cazas)#lista + velocidad de movim
+    def dibujar_cazas(lista_de_cazas,velocidad_cazas,modo_debug,pantalla,lista_explo):
+        CazaEnemigo.update(lista_de_cazas,velocidad_cazas,lista_explo)#lista + velocidad de movim
         CazaEnemigo.mostrar(pantalla,lista_de_cazas,modo_debug)

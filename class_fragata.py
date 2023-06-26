@@ -1,6 +1,7 @@
 
 import pygame
 import colores
+from animacion_explosion import Explosion
 
 class FragataAliada:
     def __init__(self, x, y, ancho, alto):
@@ -15,7 +16,7 @@ class FragataAliada:
     
     def actualizar(self, pantalla,modo_debug):
         if modo_debug:
-            pygame.draw.rect(pantalla,colores.RED1,self.rect,2) 
+            pygame.draw.rect(pantalla,colores.RED2,self.rect,2) 
             pygame.draw.rect(pantalla, colores.YELLOW2, self.distancia_de_ataque,2)
         self.barra_vida = pygame.Rect(self.rect.x,self.rect.y+25,self.vida,5)#barra de salud
         pantalla.blit(self.imagen, self.rect)
@@ -33,7 +34,7 @@ def crear_lista_fragatas(cantidad):
         lista_fragatas.append(fragata)
     return lista_fragatas
 
-def actualizar_pantalla(lista_fragatas, pantalla,modo_debug):
+def actualizar_pantalla(lista_fragatas, pantalla, modo_debug, lista_explo):
     for fragata in lista_fragatas:
         fragata.actualizar(pantalla,modo_debug)
         
@@ -42,5 +43,13 @@ def actualizar_pantalla(lista_fragatas, pantalla,modo_debug):
         elif fragata.vida <= 30 and fragata.vida > 15:
             barra_fragata=colores.YELLOW1
         elif fragata.vida <= 15:
-            barra_fragata=colores.RED1        
+            barra_fragata=colores.RED2        
         pygame.draw.rect(pantalla,barra_fragata,fragata.barra_vida)
+        
+        if fragata.vida < 0:
+            explo = Explosion((fragata.rect.x+25, fragata.rect.y+25))
+            explo2 = Explosion((fragata.rect.x+105, fragata.rect.y+25))
+            lista_explo.append(explo)
+            lista_explo.append(explo2)
+            lista_fragatas.remove(fragata)
+            

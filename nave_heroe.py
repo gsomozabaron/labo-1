@@ -4,7 +4,7 @@ import colores
 # Disparos
 tamanio_disparo = [10, 3]
 imagen_disparo = pygame.Surface(tamanio_disparo)
-imagen_disparo.fill(colores.RED1)
+imagen_disparo.fill(colores.RED2)
 disparos = []  # Lista para almacenar los disparos disparados
 
 def crear_heroe(x,y,ancho,alto):
@@ -44,7 +44,7 @@ def disparar_heroe(dict_nave_heroe,tamanio_nave_heroe):
 
 def actualizar_pantalla(dict_nave_heroe,pantalla,modo_debug):
     if modo_debug:
-        pygame.draw.rect(pantalla,(colores.RED1),dict_nave_heroe["rect"],2)
+        pygame.draw.rect(pantalla,(colores.RED2),dict_nave_heroe["rect"],2)
     pantalla.blit(dict_nave_heroe["imagen"], (dict_nave_heroe["rect"][0], dict_nave_heroe["rect"][1]))
     
     fuente = pygame.font.SysFont("Arial",30)

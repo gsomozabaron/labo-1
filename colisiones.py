@@ -1,5 +1,5 @@
-import pygame
 import sonidos
+from animacion_explosion import Explosion
 
 def verificar_colisiones(disparos, cazas, bombarderos, dict_nave_heroe, lista_de_tiros, lista_fragatas, crucero, lista_de_tiros_fragata):
     disparos_eliminar = []  # Lista para almacenar los disparos que colisionaron
@@ -19,6 +19,7 @@ def verificar_colisiones(disparos, cazas, bombarderos, dict_nave_heroe, lista_de
                 bombardero.salud -= 3  
                 disparos_eliminar.append(disparo)
                 break
+    
         ##------cazas alcanzados por fragatas-----##    
     for disparo in lista_de_tiros_fragata:
         for caza in cazas:
@@ -33,28 +34,29 @@ def verificar_colisiones(disparos, cazas, bombarderos, dict_nave_heroe, lista_de
                 disparos_eliminar.append(disparo)
                 break
             #borarr de las listas los tiros que colisionaron
-    eliminar_tiros = []
     
+    eliminar_tiros = []
+    ##--------fragata alcanzada por disparos enemigos----###
     for tiro in lista_de_tiros:
         for fragata in lista_fragatas:
             if tiro.colliderect(fragata.rect):
                 fragata.vida -= 1
                 eliminar_tiros.append(tiro)
                 break
-            #si la fragata se queda sin vida vuelve a la posic de salida    
+            #si la fragata se queda sin vida vuelve a la posic de salida 
+            """   
             if fragata.vida < 0:
-                dict_nave_heroe["score"] -= 1000
                 fragata.rect.x = -1000
                 fragata.distancia_de_ataque.x = -1000
                 fragata.vida += 1000
-                sonidos.explota.play()
-                
+            """
+        ###---crucero alcanzado por disp enemigos---###        
         if tiro. colliderect(crucero.rect):
             crucero.vida -= 1
             eliminar_tiros.append(tiro)
             break
     
-        # borrar los disparos que colisionaron
+    ###----------borrar los disparos que colisionaron-----------###
     for disparo in disparos_eliminar:
         if disparo in disparos:
             disparos.remove(disparo)

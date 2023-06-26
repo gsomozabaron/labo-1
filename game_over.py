@@ -44,7 +44,7 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla,JUGANDO):
         texto_rect = texto_bienvenida.get_rect(center=(ANCHO_VENTANA // 2, 100))
         pantalla.blit(texto_bienvenida, texto_rect)
 
-        sel_juego = fuente2.render("menu principal", True, colores.RED1)
+        sel_juego = fuente2.render("menu principal", True, colores.RED2)
         sel_juego_rect = pygame.Rect(750, 190, 200, 50)
         pantalla.blit(sel_juego, sel_juego_rect)
         

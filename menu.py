@@ -35,17 +35,17 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla,JUGANDO):
             elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                 rect_selec.topleft = evento.pos
                 if rect_selec.colliderect(rect_boton1):
-                    print("Boton 1")
+                    #print("Boton 1")
                     if nombre_jugador != "": #si el jugador ingresa al menos un caracter puede jugar
                         pygame.mixer.music.load("8bit.mp3")
-                        pygame.mixer.music.set_volume(0.3)   
+                        pygame.mixer.music.set_volume(0.2)   
                         pygame.mixer.music.play(-1)  # -1 música en bucle
-                        JUGANDO = "jugando"
+                        JUGANDO = "intro"
                         flag_correr = False        
                     #flag_correr = False
                 
                 elif rect_selec.colliderect(rect_boton2):
-                    print("Boton 2")
+                    #print("Boton 2")
                     pygame.mixer.music.load("sw_electro.mp3")
                     pygame.mixer.music.set_volume(0.3)   
                     pygame.mixer.music.play(-1)  # -1 música en bucle
@@ -53,7 +53,7 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla,JUGANDO):
                     flag_correr = False
                 
                 elif rect_selec.colliderect(rect_boton3):
-                    print("Boton 3")
+                    #print("Boton 3")
                     JUGANDO = "salir"
                     flag_correr = False
 
@@ -61,7 +61,7 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla,JUGANDO):
         texto_rect = texto_bienvenida.get_rect(center=(ANCHO_VENTANA // 2, 100))
         pantalla.blit(texto_bienvenida, texto_rect)
 
-        sel_juego = fuente2.render("A jugar", True, colores.RED1)
+        sel_juego = fuente2.render("A jugar", True, colores.RED2)
         sel_juego_rect = pygame.Rect(750, 190, 200, 50)
         pantalla.blit(sel_juego, sel_juego_rect)
         
@@ -87,7 +87,7 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla,JUGANDO):
         if nombre_jugador != "":
             pygame.draw.rect(pantalla, colores.GREEN, rect_boton1)#si el jugador ingresa al menos un caracter puede jugar
         else:
-            pygame.draw.rect(pantalla, colores.RED1, rect_boton1)#si no ingresa nombre no se habilita el boton jugar
+            pygame.draw.rect(pantalla, colores.RED2, rect_boton1)#si no ingresa nombre no se habilita el boton jugar
         
         pygame.draw.rect(pantalla, colores.SILVER, rect_boton2)
         pygame.draw.rect(pantalla, colores.SILVER, rect_boton3)

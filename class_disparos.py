@@ -73,7 +73,7 @@ def mostrar_disparos_heroe(disparos,pantalla,velocidad_de_disparos):
         else:
             disparos.remove(disparo) #si salio de la pantalla lo borramos de la lista
     for disparo in disparos:    
-        pygame.draw.rect(pantalla, colores.RED1, disparo) 
+        pygame.draw.rect(pantalla, colores.RED2, disparo) 
         
     ####-----------------tiros fragatas--------------------------------------------------------#####
 def mostrar_tiros_fragata(lista_de_tiros_fragata,pantalla):
@@ -82,7 +82,7 @@ def mostrar_tiros_fragata(lista_de_tiros_fragata,pantalla):
             tiro.x -= 3.5 # Mover el disparo hacia la izquierda
         else:
             lista_de_tiros_fragata.remove(tiro)    
-        pygame.draw.rect(pantalla,(colores.RED1),tiro)
+        pygame.draw.rect(pantalla,(colores.RED2),tiro)
 
     ####--------------tiros de cazas y bombers--------------------------------------------------####
 def mostrar_lista_de_tiros(lista_de_tiros,pantalla):

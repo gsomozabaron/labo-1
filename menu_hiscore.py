@@ -42,12 +42,12 @@ def mostrar_menu(ANCHO_VENTANA, ALTO_VENTANA, pantalla):
         for i, hiscore in enumerate(lista_hiscores[:9]):  #limite 9 scores, enumerate trae los indices y valores de la lista
             pos_name = pygame.Rect(200, posiciones[i][1], 200, 50) #genera rectangulo para el nombre para el valor i de la iteracion 
             pos_score = pygame.Rect(400, posiciones[i][1], 200, 50) #genera rectangulo para el score
-            text_name = fuente2.render("{}".format(hiscore[0]), True, colores.RED1)
+            text_name = fuente2.render("{}".format(hiscore[0]), True, colores.RED2)
             text_score = fuente2.render("{}".format(hiscore[1]), True, colores.WHITE)
             pantalla.blit(text_name, pos_name)
             pantalla.blit(text_score, pos_score)
             
-        sel_juego = fuente2.render("volver al menu", True, colores.RED1)
+        sel_juego = fuente2.render("volver al menu", True, colores.RED2)
         sel_juego_rect = pygame.Rect(750, 190, 200, 50)
          
         pantalla.blit(sel_juego, sel_juego_rect)

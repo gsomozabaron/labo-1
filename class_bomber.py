@@ -2,6 +2,7 @@ import pygame
 import random
 import colores
 import sonidos
+from animacion_explosion import Explosion
 from class_naves_enemigas import NaveEnemiga
 
 class BombarderoEnemigo(NaveEnemiga):
@@ -10,7 +11,7 @@ class BombarderoEnemigo(NaveEnemiga):
         super().__init__(x, y, 80, 80, imagen_bombardero)
         self.salud = 10
 
-    def update(lista_de_bombers,velocidad):
+    def update(lista_de_bombers, velocidad, lista_explo):
         eliminar_bombardeo = []
         for bomber in lista_de_bombers:
             if bomber.salud > 0:
@@ -20,6 +21,9 @@ class BombarderoEnemigo(NaveEnemiga):
                     bomber.rect.x = -100
                     bomber.distancia_de_ataque.x = -100
             else:
+                explo = Explosion((bomber.rect.x+25, bomber.rect.y+25))
+                lista_explo.append(explo)
+                
                 sonidos.explota.play()
                 eliminar_bombardeo.append(bomber)  
                  
@@ -40,9 +44,9 @@ class BombarderoEnemigo(NaveEnemiga):
         for bomber in lista_de_bombers:
             if modo_debug:     
                 pygame.draw.rect(pantalla,(colores.YELLOW1),bomber.distancia_de_ataque,2)
-                pygame.draw.rect(pantalla,(colores.RED1),bomber.rect,2)
+                pygame.draw.rect(pantalla,(colores.RED2),bomber.rect,2)
             pantalla.blit(bomber.imagen, bomber.rect)
             
-    def dibujar_cazas(lista_de_bombers,velocidad_bombers,modo_debug,pantalla):
-        BombarderoEnemigo.update(lista_de_bombers,velocidad_bombers)#lista + velocidad de movim
+    def dibujar_cazas(lista_de_bombers,velocidad_bombers,modo_debug,pantalla,lista_explo):
+        BombarderoEnemigo.update(lista_de_bombers,velocidad_bombers,lista_explo)#lista + velocidad de movim
         BombarderoEnemigo.mostrar(pantalla,lista_de_bombers,modo_debug)

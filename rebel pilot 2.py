@@ -15,6 +15,9 @@ import game_over
 import mensajes
 import menu_hiscore
 import hi_scores
+import intro
+import animacion_explosion
+from animacion_explosion import Explosion
 
 pygame.init()
 
@@ -37,7 +40,7 @@ dict_nave_heroe = nave_heroe.crear_heroe(1000,300,tamanio_nave_heroe[0],tamanio_
 ###------------------Disparos heroe------------------------------------###
 tamanio_disparo = [10, 3]
 imagen_disparo = pygame.Surface(tamanio_disparo)
-imagen_disparo.fill(colores.RED1)
+imagen_disparo.fill(colores.RED2)
 disparos = []  # Lista para almacenar los disparos disparados
 velocidad_de_disparos = 5
 #####################################################################################################
@@ -76,6 +79,8 @@ tiempo_espera_niveles = 2000
 tiepo_anterior = 0
 igualar_tiempo = True
 
+explo = Explosion((150, 150))
+lista_explo = []
 JUGANDO = "menu" #iniciar en el menu principal
 
 ####------------------------INICIO BUCLE DEL JUEGO---------------------------------------------###        
@@ -99,6 +104,9 @@ while flag_correr:
         
     elif JUGANDO == "salir":
        flag_correr = False
+    
+    elif JUGANDO == "intro":
+        JUGANDO = intro.mostrar_intro(ANCHO_VENTANA,ALTO_VENTANA,pantalla,JUGANDO)
        
     elif JUGANDO == "gameover":
         JUGANDO = game_over.mostrar_menu(ANCHO_VENTANA,ALTO_VENTANA,pantalla,JUGANDO)
@@ -115,8 +123,10 @@ while flag_correr:
             if evento.type == pygame.QUIT: 
                 flag_correr = False
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_ESCAPE:
-                    JUGANDO = "jugando"
+                """
+                if evento.key == pygame.K_ESCAPE: #mas adelante voy a agregar un menu con los volumenes de  
+                    JUGANDO = "jugando"           #los sonidos y efectos de audio y mostrar o no las barras de salud
+                """
                 if evento.key == pygame.K_F5: #modo debbugger para mostrar los rectangulos de colision
                     modo_debug = not modo_debug
                           
@@ -137,7 +147,7 @@ while flag_correr:
                 
                 ###---pausa para descanzar los dedos---###
                 if tiempo_actual - tiepo_anterior >= tiempo_espera_niveles:
-                    igualar_tiempo = True
+                    igualar_tiempo = True #igualar tiepo_anterior al tiempo actual para el proximo bucle
                 ##--sonido de cazas acercandose--##
                     sonidos.sonido_vuelo_caza.play()
                 ##--creacionde listas con las nuevas cantidades de enemigos--##
@@ -145,19 +155,18 @@ while flag_correr:
                     lista_de_bombers = BombarderoEnemigo.crear_lista_de_bombers(cantidad_bombers)
                     cantidad_cazas += 3
                     cantidad_bombers += 1
-                ##----igualar tiepo_anterior al tiempo actual para el proximo bucle----##
 
 ###########################################################################################################
 
         # si socre llega a los valores declarados en puntaje objetivo
-        # se ejecuta fragata.mover(2) que lleva la fragata a su nueva pocision a la velocidad "(2)"
+        # se ejecuta fragata.mover(2) que mueve la fragata dentro de la pantalla, el (2) es la velocidad de mov"
         for i, fragata in enumerate(lista_fragatas):
                         puntaje_objetivo = puntajes_objetivo[i]
                         if dict_nave_heroe["score"] >= puntaje_objetivo: 
                             fragata.mover(2) #avanzar hasta 1000
 
 ############################################################################################################
-        # si la vida del crucero se agota se vacian las listas, restaura la vida del crucero
+        # si la vida del crucero se agota se vacian las listas, se restaura la vida del crucero
         # se resetea la cantidad de naves iniciales
         # se para el bucle principal y se va al menu "gameover" 
         if crucero.vida < 0:
@@ -180,8 +189,10 @@ while flag_correr:
             class_disparos.detectar_dist_tiro(lista_de_cazas,lista_fragatas,lista_de_bombers,crucero)               
             class_disparos.dist_tiro_fragata(lista_de_cazas,lista_fragatas,lista_de_bombers)
             ultimo_disparo = tiempo_actual   
+        
         ####-----Dibujar los disparos heroe y actualizar su posición--------####    
         class_disparos.mostrar_disparos_heroe(disparos,pantalla,velocidad_de_disparos)
+        
         ####-----disparos-automaticos----------------------------------------###
         class_disparos.mostrar_lista_de_tiros(lista_de_tiros, pantalla)
         class_disparos.mostrar_tiros_fragata(lista_de_tiros_fragata,pantalla)
@@ -189,16 +200,24 @@ while flag_correr:
 ####################################--naves--################################################################
         ####---verificar coliciones------------------------------------------###
         colisiones.verificar_colisiones(disparos, lista_de_cazas, lista_de_bombers,dict_nave_heroe, lista_de_tiros, lista_fragatas, crucero, lista_de_tiros_fragata)
+        
         ####---dibrujar fragata aliada---------------------------------------###    
-        class_fragata.actualizar_pantalla(lista_fragatas,pantalla,modo_debug)
+        class_fragata.actualizar_pantalla(lista_fragatas, pantalla, modo_debug, lista_explo)
+        
         ####---dibrujar crucero aliado---------------------------------------###
-        CruceroAliado.dibujar_crucero(crucero,pantalla,modo_debug)
+        CruceroAliado.dibujar_crucero(crucero, pantalla, modo_debug, lista_explo)
+        
         ####---mostrar y actualizar naves enemigas---------------------------###
-        CazaEnemigo.dibujar_cazas(lista_de_cazas,velocidad_cazas,modo_debug,pantalla)
-        BombarderoEnemigo.dibujar_cazas(lista_de_bombers,velocidad_bombers,modo_debug,pantalla)
+        CazaEnemigo.dibujar_cazas(lista_de_cazas, velocidad_cazas, modo_debug, pantalla, lista_explo)
+        BombarderoEnemigo.dibujar_cazas(lista_de_bombers, velocidad_bombers, modo_debug, pantalla, lista_explo)
+        
         ####---dibuja nave heroe---------------------------------------------### 
         nave_heroe.actualizar_pantalla(dict_nave_heroe, pantalla,modo_debug)
-        
+         
+####################################--explosiones--##########################################################         
+        ####---mostrar explosiones-------------------------------------------###
+        animacion_explosion.mostrar_explos(lista_explo, pantalla)
+
         #####--------flip---------------------------------------------------####
         pygame.display.flip()     
 pygame.quit()
